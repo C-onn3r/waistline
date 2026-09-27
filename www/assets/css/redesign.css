@@ -1,22 +1,70 @@
 /*
   Visual redesign layer.
 
-  This file intentionally only changes *look*, not behaviour: shapes,
-  spacing, colors and the app-level bottom navigation bar. It builds on
-  Framework7's own CSS variables so every existing colour theme
-  (Settings > Appearance) and dark/light mode keep working unchanged.
+  Design idea: instead of decorating the existing flat grey-on-white
+  Framework7 look with rounded corners, this sets up a real elevation
+  system with exactly one floating surface (the bottom navigation bar)
+  and two flat tiers underneath it:
+
+    tier 0  app background + bars + navigational lists (Settings, About,
+            Goals) - flat, no box, sits directly on a tinted background,
+            separated by spacing and leading icons instead of borders.
+    tier 1  content/form surfaces (diary meal cards, forms with inputs,
+            dialogs, search) - a lighter "card" surface that visibly
+            pops against the tinted background.
+    tier 2  actions (buttons, FAB, the bottom nav) - filled with the
+            accent colour.
+
+  It builds entirely on Framework7's own CSS variables so every existing
+  colour theme (Settings > Appearance) and dark/light mode keep working
+  unchanged - switching theme colour also re-tints the background.
 */
 
 :root {
   --app-radius-s: 12px;   /* small controls: buttons, inputs, chips */
-  --app-radius-m: 18px;   /* list groups, cards */
-  --app-radius-l: 26px;   /* dialogs, sheets, the bottom nav island */
+  --app-radius-m: 20px;   /* card surfaces */
+  --app-radius-l: 28px;   /* dialogs, sheets, the bottom nav island */
   --app-nav-height: 64px; /* height of the bottom navigation bar */
-  --app-gutter: 12px;     /* side margin used for "floating" surfaces */
+  --app-gutter: 8px;      /* side margin used for the floating nav bar */
+  --app-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 8px rgba(0, 0, 0, 0.05);
+  --app-shadow-2: 0 6px 20px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.10);
 }
 
 /* ---------------------------------------------------------------------
-   Shape system: round Framework7's own components via its variables
+   Tonal background: a faint tint of the active accent colour, so
+   surfaces sitting on top of it (cards, bars, the nav island) read as
+   distinct elevation instead of "white box on white page".
+   --------------------------------------------------------------------- */
+.md {
+  --app-bg: #f2f1f6;
+  --app-bg: color-mix(in srgb, var(--f7-theme-color) 5%, #f6f5f8);
+  --app-surface: #ffffff;
+  --app-surface: color-mix(in srgb, var(--f7-theme-color) 2%, #ffffff);
+  --app-surface-alt: #eef0f4;
+  --app-surface-alt: color-mix(in srgb, var(--f7-theme-color) 6%, #eef0f4);
+  --app-divider: rgba(0, 0, 0, 0.08);
+}
+.md.theme-dark {
+  --app-bg: #141416;
+  --app-bg: color-mix(in srgb, var(--f7-theme-color) 14%, #131315);
+  --app-surface: #1e1e21;
+  --app-surface: color-mix(in srgb, var(--f7-theme-color) 10%, #201f23);
+  --app-surface-alt: #232327;
+  --app-surface-alt: color-mix(in srgb, var(--f7-theme-color) 14%, #232327);
+  --app-divider: rgba(255, 255, 255, 0.08);
+}
+
+html, body {
+  background: var(--app-bg);
+}
+.md {
+  --f7-page-bg-color: var(--app-bg);
+  --f7-bars-bg-color: var(--app-bg);
+  --f7-list-bg-color: transparent;
+}
+
+/* ---------------------------------------------------------------------
+   Shape system
    --------------------------------------------------------------------- */
 .md {
   --f7-card-border-radius: var(--app-radius-m);
@@ -28,75 +76,149 @@
   --f7-popover-border-radius: var(--app-radius-m);
   --f7-actions-border-radius: var(--app-radius-l);
   --f7-sheet-border-radius: var(--app-radius-l);
-  --f7-list-item-padding-vertical: 13px;
+  --f7-list-item-padding-vertical: 14px;
   --f7-list-item-media-margin: 14px;
-}
-
-/* Slightly airier type, closer to a modern Android/Flutter look */
-.md {
-  --f7-navbar-title-font-weight: 700;
-  --f7-navbar-font-size: 20px;
-}
-.md .list-item-title,
-.md .item-title {
-  letter-spacing: 0.1px;
-}
-.md .block-title {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  opacity: 0.62;
-  margin: 22px 16px 10px;
+  --f7-searchbar-input-border-radius: var(--app-radius-s);
 }
 
 /* ---------------------------------------------------------------------
-   Lists: fewer hard tiles, more whitespace, softly rounded groups
+   Typography: bigger, bolder, a real "large title" header
+   --------------------------------------------------------------------- */
+.md {
+  --f7-text-color: #1b1b1f;
+}
+.md.theme-dark {
+  --f7-text-color: rgba(255, 255, 255, 0.92);
+}
+.md {
+  --f7-navbar-title-font-weight: 800;
+  --f7-navbar-font-size: 26px;
+  --f7-navbar-title-text-align: left;
+  --f7-navbar-inner-padding-left: 20px;
+  --f7-navbar-inner-padding-right: 12px;
+  --f7-list-item-title-font-size: 16px;
+}
+.md .list .item-title,
+.md .list .item-text,
+.md .list .item-after {
+  font-size: 16px;
+}
+.md .block-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin: 26px 20px 10px;
+}
+
+/* ---------------------------------------------------------------------
+   Bars: flat, blended into the page - no separating edge/shadow
+   --------------------------------------------------------------------- */
+.md .navbar-inner .title {
+  padding-inline-start: 4px;
+}
+.md .navbar:after,
+.md .subnavbar:after,
+.md .toolbar:before {
+  display: none;
+}
+.md .subnavbar-inner {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* ---------------------------------------------------------------------
+   Tier 0: navigational lists (Settings, About, Goals) sit flat on the
+   tinted background, separated by generous spacing, not boxes.
    --------------------------------------------------------------------- */
 .md .list {
-  margin: 14px var(--app-gutter);
-}
-.md .list.no-margin,
-.md .list.searchbar-found,
-.md #diary-nutrition .list {
-  margin: 0;
+  margin: 6px 4px 22px;
+  background: transparent;
 }
 .md .list > ul {
-  border-radius: var(--app-radius-m);
-  overflow: hidden;
-  box-shadow: var(--f7-elevation-1);
-}
-.md .list {
-  --f7-list-item-border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
 }
 .md .list li + li {
-  border-top: 1px solid rgba(125, 125, 125, 0.14);
-}
-.md .list .item-content {
-  min-height: 52px;
+  border-top: 1px solid var(--app-divider);
 }
 .md .list ul:before,
 .md .list ul:after {
   display: none;
 }
-
-/* Cards (e.g. diary meal groups) */
-.md .card {
-  box-shadow: var(--f7-elevation-1);
+.md .list .item-content {
+  min-height: 56px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
-.md .card.card-outline {
-  border-color: rgba(var(--f7-theme-color-rgb, 0, 0, 0), 0.08);
+.md .list {
+  --f7-list-item-border-color: transparent;
+}
+
+/* Leading icon chip, used on the Settings/About menu rows */
+.md .list .item-media.icon-chip {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--f7-theme-color-rgb), 0.14);
+  color: var(--f7-theme-color);
+  margin-right: 4px;
+}
+.md .list .item-media.icon-chip i {
+  font-size: 20px;
 }
 
 /* ---------------------------------------------------------------------
-   Bars: flatter, elevated surfaces instead of hard-edged toolbars
+   Tier 1: surfaces that should visibly pop off the tinted background -
+   forms (dropdowns/inputs/toggles), search, and explicit card content.
    --------------------------------------------------------------------- */
-.md .navbar,
-.md .subnavbar {
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+.md .list:has(.item-input) {
+  margin: 18px var(--app-gutter) 22px;
 }
-.md .navbar-inner .title {
-  font-weight: 700;
+.md .list:has(.item-input) > ul {
+  background: var(--app-surface);
+  border-radius: var(--app-radius-m);
+  box-shadow: var(--app-shadow-1);
+  overflow: hidden;
+}
+.md .list:has(.item-input) .item-content {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.md .searchbar-inner input {
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-1);
+}
+
+.md .card {
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-1);
+}
+.md .card.card-outline {
+  border-color: var(--app-divider);
+}
+.md .list.card > ul {
+  background: transparent;
+  box-shadow: none;
+}
+
+.md .accordion-header,
+.md .accordion-footer {
+  background: var(--app-surface-alt);
+}
+
+.md .dialog,
+.md .actions-modal,
+.md .sheet-modal,
+.md .popover-inner {
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-2);
 }
 
 /* Round food/photo imagery */
@@ -106,17 +228,29 @@
   object-fit: cover;
 }
 
-/* Buttons: pill-ish, a bit more generous */
+/* ---------------------------------------------------------------------
+   Tier 2: actions - filled with the accent colour
+   --------------------------------------------------------------------- */
 .md .button {
-  --f7-button-height: 44px;
-  font-weight: 600;
+  --f7-button-height: 46px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.md .button-fill {
+  box-shadow: var(--app-shadow-1);
 }
 .md .fab a {
   border-radius: 20px;
+  box-shadow: var(--app-shadow-2);
+}
+.md .toggle-icon {
+  box-shadow: none;
 }
 
 /* ---------------------------------------------------------------------
-   App-level bottom navigation bar (replaces the old hamburger drawer)
+   App-level floating bottom navigation bar
+   (replaces the old hamburger drawer; the one deliberately "elevated"
+   surface in the whole UI)
    --------------------------------------------------------------------- */
 #app-bottom-nav {
   position: fixed;
@@ -127,12 +261,15 @@
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  background: var(--f7-bars-bg-color);
+  background: rgba(var(--f7-bars-bg-color-rgb, 255, 255, 255), 0.92);
+  background: color-mix(in srgb, var(--app-surface) 92%, transparent);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
   border-radius: var(--app-radius-l);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 1px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--app-shadow-2);
   z-index: 6000;
-  padding: 6px;
-  gap: 2px;
+  padding: 6px 2px;
+  gap: 0;
 }
 
 .app-bottom-nav-link {
@@ -144,21 +281,21 @@
   gap: 2px;
   border-radius: var(--app-radius-m);
   color: var(--f7-text-color);
-  opacity: 0.6;
+  opacity: 0.55;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
   transition: background-color 160ms ease, opacity 160ms ease, color 160ms ease;
   min-width: 0;
-  padding: 0 2px;
+  padding: 0;
 }
 
 .app-bottom-nav-link .app-bottom-nav-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
+  height: 25px;
   padding: 0 10px;
-  border-radius: 12px;
+  border-radius: 13px;
   transition: background-color 160ms ease;
 }
 
@@ -168,11 +305,13 @@
 }
 
 .app-bottom-nav-link .app-bottom-nav-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  line-height: 1.15;
+  letter-spacing: -0.1px;
+  line-height: 1.1;
   text-align: center;
   max-width: 100%;
+  padding: 0 1px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -206,6 +345,7 @@
 .page[data-name="goals"] > .toolbar.toolbar-bottom,
 .page[data-name="foods-meals-recipes"] > .toolbar.toolbar-bottom {
   bottom: calc(var(--app-nav-height) + calc(2 * var(--app-gutter)) + var(--f7-safe-area-bottom)) !important;
+  background: var(--app-bg);
 }
 
 .page[data-name="foods-meals-recipes"] .fab.fab-right-bottom {
