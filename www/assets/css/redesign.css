@@ -199,6 +199,7 @@ html, body {
 .md .card {
   background: var(--app-surface);
   box-shadow: var(--app-shadow-1);
+  overflow: hidden;
 }
 .md .card.card-outline {
   border-color: var(--app-divider);
@@ -211,6 +212,54 @@ html, body {
 .md .accordion-header,
 .md .accordion-footer {
   background: var(--app-surface-alt);
+}
+
+/* ---------------------------------------------------------------------
+   Diary: dashboard-style hero (date + today's totals) instead of a
+   nutrition strip hidden in a bottom toolbar
+   --------------------------------------------------------------------- */
+.diary-hero {
+  margin: 4px var(--app-gutter) 20px;
+  background: var(--app-surface);
+  border-radius: var(--app-radius-m);
+  box-shadow: var(--app-shadow-1);
+  overflow: hidden;
+}
+.diary-hero-date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 6px;
+  font-weight: 700;
+  font-size: 15px;
+  border-bottom: 1px solid var(--app-divider);
+}
+.diary-hero-date #diary-date {
+  flex: 1;
+  text-align: center;
+}
+.diary-hero-date .link {
+  color: var(--f7-theme-color);
+  padding: 6px 10px;
+}
+.diary-hero #diary-nutrition {
+  padding: 14px 10px 16px;
+}
+.diary-hero #diary-nutrition .nutrition-total-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  opacity: 0.6;
+  font-weight: 700 !important;
+}
+.diary-hero #diary-nutrition .nutrition-total-values,
+.diary-hero #diary-nutrition .nutrition-total-remaining {
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.diary-hero #diary-nutrition .col {
+  padding: 0 2px;
 }
 
 .md .dialog,
@@ -339,9 +388,8 @@ html, body {
   padding-bottom: calc(var(--f7-page-toolbar-bottom-offset, 0px) + var(--f7-safe-area-bottom) + var(--app-nav-height) + calc(2 * var(--app-gutter)) + var(--f7-page-content-extra-padding-bottom, 0px)) !important;
 }
 
-/* Pages with their own bottom toolbar (Diary nutrition bar, Goals tabs,
-   Foods/Meals/Recipes tabs): lift that toolbar above our nav bar too */
-.page[data-name="diary"] > .toolbar.toolbar-bottom,
+/* Pages with their own bottom toolbar (Goals tabs, Foods/Meals/Recipes
+   tabs): lift that toolbar above our nav bar too */
 .page[data-name="goals"] > .toolbar.toolbar-bottom,
 .page[data-name="foods-meals-recipes"] > .toolbar.toolbar-bottom {
   bottom: calc(var(--app-nav-height) + calc(2 * var(--app-gutter)) + var(--f7-safe-area-bottom)) !important;

@@ -17,7 +17,7 @@
   along with app.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<div class="page page-with-subnavbar" data-name="diary">
+<div class="page" data-name="diary">
 
 	<div class="navbar">
 		<div class="navbar-bg"></div>
@@ -44,27 +44,22 @@
 		</div>
 	</div>
 
-	<div class="subnavbar">
-		<div class="subnavbar-inner">
-			<div>
+	<div class="page-content">
+
+		<!-- Dashboard-style hero: date + today's totals, up front instead of
+		     hidden in a bottom bar -->
+		<div class="diary-hero">
+			<div class="diary-hero-date">
 				<a href="#" class="link icon-only change-date"><i class="icon icon-back"></i></a>
-			</div>
-			<div id="diary-date"></div>
-			<div>
+				<div id="diary-date"></div>
 				<a href="#" class="link icon-only change-date"><i class="icon icon-forward"></i></a>
 			</div>
-		</div>
-	</div>
-
-	<div class="toolbar toolbar-bottom">
-		<div class="toolbar-inner ripple show-values" id="diary-nutrition">
-			<div class="swiper swiper-init">
-				<div class="swiper-wrapper"></div>
+			<div class="ripple show-values" id="diary-nutrition">
+				<div class="swiper swiper-init">
+					<div class="swiper-wrapper"></div>
+				</div>
 			</div>
 		</div>
-	</div>
-
-	<div class="page-content">
 
 		<div id="diary-day"></div>
 

@@ -244,6 +244,13 @@
   "settings": {
     "title": "Einstellungen",
     "needs-restart": "Starte die App neu, um die Änderungen anzuwenden.",
+    "groups": {
+      "general": "Allgemein",
+      "tracking": "Tracking",
+      "data": "Daten & Einheiten",
+      "connections": "Verbindungen",
+      "system": "System"
+    },
     "appearance": {
       "title": "Darstellung",
       "app-mode": "App-Modus",
