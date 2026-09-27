@@ -36,6 +36,7 @@
 
   <!--CSS-->
   <link rel="stylesheet" href="assets/css/global-styles.css">
+  <link rel="stylesheet" href="assets/css/redesign.css">
   <link rel="stylesheet" href="activities/diary/views/diary.css">
 
   <!--Localization-->
@@ -52,64 +53,40 @@
 
   <div id="app">
 
-    <!-- Panel -->
-    <div id="app-panel" class="panel panel-left panel-cover panel-init">
-      <div class="list">
-        <ul>
-          <li class="no-chevron">
-            <a href="/statistics/" class="item-link item-content" data-reload-current="true">
-              <div class="item-media"><i class="icon fas fa-chart-area"></i></div>
-              <div class="item-inner" data-localize="statistics.title">Statistics</div>
-            </a>
-          </li>
-
-          <li class="no-chevron">
-            <a href="/diary/" class="item-link item-content" data-reload-current="true">
-              <div class="item-media"><i class="icon far fa-calendar-alt"></i></div>
-              <div class="item-inner" data-localize="diary.title">Diary</div>
-            </a>
-          </li>
-
-          <li class="no-chevron">
-            <a href="/foods-meals-recipes/" class="item-link item-content" data-reload-current="true">
-              <div class="item-media"><i class="icon fas fa-utensils"></i></div>
-              <div class="item-inner" data-localize="foods-meals-recipes.title">Foods, Meals, Recipes</div>
-            </a>
-          </li>
-
-          <li class="no-chevron">
-            <a href="/goals/" class="item-link item-content" data-reload-current="true">
-              <div class="item-media"><i class="icon fas fa-bullseye"></i></div>
-              <div class="item-inner" data-localize="goals.title">Goals</div>
-            </a>
-          </li>
-
-          <li class="no-chevron">
-            <a href="/settings/" class="item-link item-content" data-reload-current="true">
-              <div class="item-media"><i class="icon fas fa-cog"></i></div>
-              <div class="item-inner" data-localize="settings.title">Settings</div>
-            </a>
-          </li>
-
-          <li class="no-chevron">
-            <a href="/about/" class="item-link item-content" data-reload-current="true">
-              <div class="item-media"><i class="icon fas fa-info-circle"></i></div>
-              <div class="item-inner" data-localize="about.title">About</div>
-            </a>
-          </li>
-
-          <!--<li class="no-chevron">
-            <a href="/setup-wizard/" class="item-link item-content" data-reload-current="true">
-              <div class="item-media"><i class="icon fas fa-info-circle"></i></div>
-              <div class="item-inner" data-localize="setup-wizard.title">Setup Wizard - temp</div>
-            </a>
-          </li>-->
-
-        </ul>
-      </div>
-    </div>
-
     <div class="view view-main" id="main-view"></div>
+
+    <!-- App-wide bottom navigation bar (replaces the old hamburger drawer) -->
+    <div id="app-bottom-nav">
+      <a href="/statistics/" class="app-bottom-nav-link" data-route="/statistics/" data-reload-current="true">
+        <span class="app-bottom-nav-icon"><i class="icon material-icons">bar_chart</i></span>
+        <span class="app-bottom-nav-label" data-localize="statistics.title">Statistics</span>
+      </a>
+
+      <a href="/diary/" class="app-bottom-nav-link" data-route="/diary/" data-reload-current="true">
+        <span class="app-bottom-nav-icon"><i class="icon material-icons">calendar_today</i></span>
+        <span class="app-bottom-nav-label" data-localize="diary.title">Diary</span>
+      </a>
+
+      <a href="/foods-meals-recipes/" class="app-bottom-nav-link" data-route="/foods-meals-recipes/" data-reload-current="true">
+        <span class="app-bottom-nav-icon"><i class="icon material-icons">restaurant</i></span>
+        <span class="app-bottom-nav-label" data-localize="foods-meals-recipes.foods">Foods</span>
+      </a>
+
+      <a href="/goals/" class="app-bottom-nav-link" data-route="/goals/" data-reload-current="true">
+        <span class="app-bottom-nav-icon"><i class="icon material-icons">flag</i></span>
+        <span class="app-bottom-nav-label" data-localize="goals.title">Goals</span>
+      </a>
+
+      <a href="/settings/" class="app-bottom-nav-link" data-route="/settings/" data-reload-current="true">
+        <span class="app-bottom-nav-icon"><i class="icon material-icons">settings</i></span>
+        <span class="app-bottom-nav-label" data-localize="settings.title">Settings</span>
+      </a>
+
+      <a href="/about/" class="app-bottom-nav-link" data-route="/about/" data-reload-current="true">
+        <span class="app-bottom-nav-icon"><i class="icon material-icons">info</i></span>
+        <span class="app-bottom-nav-label" data-localize="about.title">About</span>
+      </a>
+    </div>
   </div>
 
   <script src="cordova.js"></script>

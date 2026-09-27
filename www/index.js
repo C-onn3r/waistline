@@ -124,7 +124,6 @@ const app = {
   },
 
   setRtlWritingDirection: function() {
-    $("#app-panel").get(0).classList.replace("panel-left", "panel-right");
     $("#framework7").get(0).setAttribute("href", "assets/framework7/framework7-bundle-rtl.min.css");
     $("html").get(0).setAttribute("dir", "rtl");
   },
@@ -137,11 +136,6 @@ const app = {
     // App id
     id: "com.waist.line",
     version: "2.9.2",
-    // Enable swipe panel
-    panel: {
-      swipe: true,
-      swipeActiveArea: 30,
-    },
     calendar: {
       url: 'calendar/',
       dateFormat: 'dd.mm.yyyy',
@@ -424,33 +418,21 @@ if (rtl)
 
 const mainView = app.f7.views.create("#main-view", viewOptions);
 
-let enableDisableSwipe = function(panel) {
-  let pageName = app.f7.views.main.router.currentRoute.name || "";
-  let history = app.f7.views.main.router.history || [];
+// Bottom navigation bar: highlight whichever of its destinations the
+// current route belongs to (including sub-routes/editors of that section)
+const bottomNavRoutes = ["/statistics/", "/diary/", "/foods-meals-recipes/", "/goals/", "/settings/", "/about/"];
 
-  if (pageName.includes("Editor"))
-    panel.disableSwipe();
-  else if (pageName == "Chart")
-    panel.disableSwipe();
-  else if (pageName == "Foods, Meals, Recipes" && history.includes("/diary/"))
-    panel.disableSwipe();
-  else
-    panel.enableSwipe();
+let updateBottomNav = function() {
+  let path = (app.f7.views.main.router.currentRoute || {}).path || "";
+  let activeRoute = bottomNavRoutes.find((route) => path === route || path.startsWith(route));
+
+  document.querySelectorAll("#app-bottom-nav .app-bottom-nav-link").forEach((link) => {
+    link.classList.toggle("active", link.dataset.route === activeRoute);
+  });
 };
 
-document.addEventListener("page:init", function(event) {
-  let panel = app.f7.panel.get("#app-panel");
-  enableDisableSwipe(panel);
-
-  // Close panel when switching pages
-  if (panel)
-    panel.close(animate);
-});
-
-document.addEventListener("page:reinit", function(event) {
-  let panel = app.f7.panel.get("#app-panel");
-  enableDisableSwipe(panel);
-});
+document.addEventListener("page:init", updateBottomNav);
+document.addEventListener("page:reinit", updateBottomNav);
 
 app.f7.on("init", async function(event) {});
 

@@ -296,15 +296,12 @@ app.Settings = {
 
   applyAppMode: function(appMode) {
     let html = document.getElementsByTagName("html")[0];
-    let panel = document.getElementById("app-panel");
 
     if (appMode === "dark") {
       html.classList.add("theme-dark");
-      panel.style["background-color"] = "black";
       Chart.defaults.global.defaultFontColor = "white";
     } else if (appMode === "light") {
       html.classList.remove("theme-dark");
-      panel.style["background-color"] = "white";
       Chart.defaults.global.defaultFontColor = "black";
     }
   },

@@ -1,0 +1,217 @@
+/*
+  Visual redesign layer.
+
+  This file intentionally only changes *look*, not behaviour: shapes,
+  spacing, colors and the app-level bottom navigation bar. It builds on
+  Framework7's own CSS variables so every existing colour theme
+  (Settings > Appearance) and dark/light mode keep working unchanged.
+*/
+
+:root {
+  --app-radius-s: 12px;   /* small controls: buttons, inputs, chips */
+  --app-radius-m: 18px;   /* list groups, cards */
+  --app-radius-l: 26px;   /* dialogs, sheets, the bottom nav island */
+  --app-nav-height: 64px; /* height of the bottom navigation bar */
+  --app-gutter: 12px;     /* side margin used for "floating" surfaces */
+}
+
+/* ---------------------------------------------------------------------
+   Shape system: round Framework7's own components via its variables
+   --------------------------------------------------------------------- */
+.md {
+  --f7-card-border-radius: var(--app-radius-m);
+  --f7-block-inset-border-radius: var(--app-radius-m);
+  --f7-list-inset-border-radius: var(--app-radius-m);
+  --f7-menu-list-border-radius: var(--app-radius-s);
+  --f7-button-border-radius: var(--app-radius-s);
+  --f7-dialog-border-radius: var(--app-radius-l);
+  --f7-popover-border-radius: var(--app-radius-m);
+  --f7-actions-border-radius: var(--app-radius-l);
+  --f7-sheet-border-radius: var(--app-radius-l);
+  --f7-list-item-padding-vertical: 13px;
+  --f7-list-item-media-margin: 14px;
+}
+
+/* Slightly airier type, closer to a modern Android/Flutter look */
+.md {
+  --f7-navbar-title-font-weight: 700;
+  --f7-navbar-font-size: 20px;
+}
+.md .list-item-title,
+.md .item-title {
+  letter-spacing: 0.1px;
+}
+.md .block-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  opacity: 0.62;
+  margin: 22px 16px 10px;
+}
+
+/* ---------------------------------------------------------------------
+   Lists: fewer hard tiles, more whitespace, softly rounded groups
+   --------------------------------------------------------------------- */
+.md .list {
+  margin: 14px var(--app-gutter);
+}
+.md .list.no-margin,
+.md .list.searchbar-found,
+.md #diary-nutrition .list {
+  margin: 0;
+}
+.md .list > ul {
+  border-radius: var(--app-radius-m);
+  overflow: hidden;
+  box-shadow: var(--f7-elevation-1);
+}
+.md .list {
+  --f7-list-item-border-color: transparent;
+}
+.md .list li + li {
+  border-top: 1px solid rgba(125, 125, 125, 0.14);
+}
+.md .list .item-content {
+  min-height: 52px;
+}
+.md .list ul:before,
+.md .list ul:after {
+  display: none;
+}
+
+/* Cards (e.g. diary meal groups) */
+.md .card {
+  box-shadow: var(--f7-elevation-1);
+}
+.md .card.card-outline {
+  border-color: rgba(var(--f7-theme-color-rgb, 0, 0, 0), 0.08);
+}
+
+/* ---------------------------------------------------------------------
+   Bars: flatter, elevated surfaces instead of hard-edged toolbars
+   --------------------------------------------------------------------- */
+.md .navbar,
+.md .subnavbar {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+.md .navbar-inner .title {
+  font-weight: 700;
+}
+
+/* Round food/photo imagery */
+.md .food-thumbnail img,
+.md .photo-holder img {
+  border-radius: var(--app-radius-s);
+  object-fit: cover;
+}
+
+/* Buttons: pill-ish, a bit more generous */
+.md .button {
+  --f7-button-height: 44px;
+  font-weight: 600;
+}
+.md .fab a {
+  border-radius: 20px;
+}
+
+/* ---------------------------------------------------------------------
+   App-level bottom navigation bar (replaces the old hamburger drawer)
+   --------------------------------------------------------------------- */
+#app-bottom-nav {
+  position: fixed;
+  left: var(--app-gutter);
+  right: var(--app-gutter);
+  bottom: calc(var(--app-gutter) + var(--f7-safe-area-bottom));
+  height: var(--app-nav-height);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  background: var(--f7-bars-bg-color);
+  border-radius: var(--app-radius-l);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 6000;
+  padding: 6px;
+  gap: 2px;
+}
+
+.app-bottom-nav-link {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: var(--app-radius-m);
+  color: var(--f7-text-color);
+  opacity: 0.6;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 160ms ease, opacity 160ms ease, color 160ms ease;
+  min-width: 0;
+  padding: 0 2px;
+}
+
+.app-bottom-nav-link .app-bottom-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 12px;
+  transition: background-color 160ms ease;
+}
+
+.app-bottom-nav-link .app-bottom-nav-icon i {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.app-bottom-nav-link .app-bottom-nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.app-bottom-nav-link.active {
+  opacity: 1;
+  color: var(--f7-theme-color);
+}
+
+.app-bottom-nav-link.active .app-bottom-nav-icon {
+  background: rgba(var(--f7-theme-color-rgb), 0.16);
+}
+
+.app-bottom-nav-link:active .app-bottom-nav-icon {
+  background: rgba(var(--f7-theme-color-rgb), 0.1);
+}
+
+/* Reserve space so page content never sits behind the floating bar */
+.md .page-content {
+  padding-bottom: calc(var(--f7-page-toolbar-bottom-offset, 0px) + var(--f7-safe-area-bottom) + var(--app-nav-height) + calc(2 * var(--app-gutter)) + var(--f7-page-content-extra-padding-bottom, 0px)) !important;
+}
+
+/* Pages with their own bottom toolbar (Diary nutrition bar, Goals tabs,
+   Foods/Meals/Recipes tabs): lift that toolbar above our nav bar too */
+.page[data-name="diary"] > .toolbar.toolbar-bottom,
+.page[data-name="goals"] > .toolbar.toolbar-bottom,
+.page[data-name="foods-meals-recipes"] > .toolbar.toolbar-bottom {
+  bottom: calc(var(--app-nav-height) + calc(2 * var(--app-gutter)) + var(--f7-safe-area-bottom)) !important;
+}
+
+.page[data-name="foods-meals-recipes"] .fab.fab-right-bottom {
+  bottom: calc(var(--f7-fab-margin) + var(--app-nav-height) + calc(2 * var(--app-gutter)) + var(--f7-safe-area-bottom)) !important;
+}
+
+html[dir="rtl"] #app-bottom-nav {
+  flex-direction: row-reverse;
+}
